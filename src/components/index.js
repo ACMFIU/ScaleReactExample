@@ -1,11 +1,13 @@
 import React from 'react';
-import {Container} from 'react-bootstrap';
+import '../assets/css/style.css';
+import Navigation from './Navigation/StoreNavBar';
 
 class Main extends React.Component {
   render(){
     return(
-      <Container>
-      </Container>
+      <React.Fragment>
+        <Navigation />
+      </React.Fragment>
     );
   }
 }

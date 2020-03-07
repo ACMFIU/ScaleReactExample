@@ -1,0 +1,12 @@
+.banner-logo{
+  height: 300px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.nav-tabs .nav-item{
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
