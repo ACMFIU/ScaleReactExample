@@ -1,11 +1,7 @@
 import React from 'react';
-import {Container, Col, Row, Nav, NavDropdown, Button, Image} from 'react-bootstrap';
+import {Container, Col, Row, Nav, NavDropdown, Image} from 'react-bootstrap';
 
 class Navigation extends React.Component {
-  constructor(props){
-    super(props);
-  }
-
   render(){
     return(
       <Container>
