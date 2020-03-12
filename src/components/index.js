@@ -1,17 +1,24 @@
 import React from 'react';
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch
+} from 'react-router-dom';
 import '../assets/css/style.css';
-import Navigation from './Navigation/StoreNavBar';
 import Landing from './Home/Landing';
+import ItemDetail from './ItemDetails/ItemDetail';
 
-class Main extends React.Component {
-  render(){
-    return(
-      <React.Fragment>
-        <Navigation />
-        <Landing />
-      </React.Fragment>
-    );
-  }
+
+export default function Main() {
+  return(
+      <Router>
+        <Switch>
+          <Route path="/" component={Landing} />
+          <Route path="/about-us" />
+          <Route path="/blog" />
+          <Route path="/contact-us" />
+          <Route path='/store/books/:bookSKU' component={ItemDetail} />
+        </Switch>
+      </Router>
+  );
 }
-
-export default Main;
