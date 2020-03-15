@@ -1,11 +1,13 @@
 import React from 'react';
-import {Container} from 'react-bootstrap';
+// import {Container} from 'react-bootstrap';
+import MenuBar from './Navigation/MenuBar';
 
 class Main extends React.Component {
   render(){
     return(
-      <Container>
-      </Container>
+      <React.Fragment>
+        <MenuBar />
+      </React.Fragment>
     );
   }
 }
