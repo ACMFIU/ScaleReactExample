@@ -2,6 +2,7 @@ import React from 'react';
 import {Container, Row, Col, Image} from 'react-bootstrap';
 const data = require('../../models/fake-data');
 
+
 class ItemDetail extends React.Component {
   constructor(props){
     super(props);
