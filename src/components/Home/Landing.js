@@ -22,6 +22,7 @@ class Landing extends React.Component {
             <Row className="item-rows">
               {this.state.books.map((book) => (
                 <Link to={`/store/books/${book.sku}`}>
+
                   <div className="item-card">
                     <Image className="display-grid-img" src={book.image} />
                     <p>{book.name}</p>

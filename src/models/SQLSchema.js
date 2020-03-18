@@ -8,6 +8,7 @@ const Connection = new Sequelize(
   {
     dialect: 'postgres',
     host: 'localhost',
+
   }
 );
 
@@ -186,3 +187,4 @@ Manufacturer.hasMany(Items);
 
 
 //================== Data Injection ========================//
+
