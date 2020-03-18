@@ -1,35 +1,44 @@
 import Sequelize from 'sequielize';
+import _ from 'lodash';
 
-const Connection = new Sequilize(
-  'relay',
+const Connection = new Sequelize(
+  'storeDB',
   'postgres',
-  'podtgres',
+  'ACMPanthers2020',
   {
     dialect: 'postgres',
-    host: '',
+    host: 'localhost',
+
   }
 );
 
 
 //================== Tables ========================//
 const Users = Connection.define('users', {
+  id: {
+    allowNull: false,
+    primaryKey: true,
+    type: Sequelize.UUID,
+    defaultValue: Sequelize.UUID4
+  },
   firstName: {
-    type: Sequilize.STRING,
+    type: Sequelize.STRING,
     allowNull: false
   },
   lastName: {
-    type: Sequilize.STRING,
+    type: Sequelize.STRING,
     allowNull: false
   },
   email: {
-    type: Sequilize.STRING,
+    type: Sequelize.STRING,
+    unique: true,
     allowNull: false,
     validate: {
       isEmail: true,
     }
   },
   password: {
-    type: Sequilize.STRING,
+    type: Sequelize.STRING,
     allowNull: false,
     validate: {
       isPassword: true,
@@ -38,95 +47,144 @@ const Users = Connection.define('users', {
 });
 
 const Books = Connection.define('books', {
+  id: {
+    allowNull: false,
+    primaryKey: true,
+    type: Sequelize.UUID,
+    defaultValue: Sequelize.UUID4
+  },
   title: {
-    type: Sequilize.STRING,
+    type: Sequelize.STRING,
     allowNull: false
   },
   sku: {
-    type: Sequilize.STRING,
+    type: Sequelize.STRING,
     allowNull: false
   },
   image: {
-    type: Sequilize.STRING,
+    type: Sequelize.STRING,
     allowNull: false
   },
   description: {
-    type: Sequilize.STRING,
+    type: Sequelize.STRING,
     allowNull: false
   },
   price: {
-    type: Sequilize.INTEGER,
+    type: Sequelize.INTEGER,
     allowNull: false
   },
   qty: {
-    type: Sequilize.INTEGER,
+    type: Sequelize.INTEGER,
     allowNull: true
   },
+  pdf: {
+    type: Sequelize.STRING,
+    allowNull: true
+  }
 });
 
 const Author = Connection.define('authors', {
+  id: {
+    allowNull: false,
+    primaryKey: true,
+    type: Sequelize.UUID,
+    defaultValue: Sequelize.UUID4
+  },
   firstName: {
-    type: Sequilize.STRING,
+    type: Sequelize.STRING,
     allowNull: false
   },
   lastName: {
-    type: Sequilize.STRING,
+    type: Sequelize.STRING,
     allowNull: false
   },
   bio: {
-    type: Sequilize.STRING,
+    type: Sequelize.STRING,
     allowNull: false
   },
 });
 
 const Comments = Connection.define('comments', {
+  id: {
+    allowNull: false,
+    primaryKey: true,
+    type: Sequelize.UUID,
+    defaultValue: Sequelize.UUID4
+  },
   message: {
-    type: Sequilize.STRING,
+    type: Sequelize.STRING,
     allowNull: true
   },
 });
 
 const Items = Connection.define('items', {
+  id: {
+    allowNull: false,
+    primaryKey: true,
+    type: Sequelize.UUID,
+    defaultValue: Sequelize.UUID4
+  },
   name: {
-    type: Sequilize.STRING,
+    type: Sequelize.STRING,
     allowNull: false
   },
   type: {
-    type: Sequilize.STRING,
+    type: Sequelize.STRING,
     allowNull: false
   },
   sku: {
-    type: Sequilize.STRING,
+    type: Sequelize.STRING,
     allowNull: false
   },
   image: {
-    type: Sequilize.STRING,
+    type: Sequelize.STRING,
     allowNull: false
   },
   description: {
-    type: Sequilize.STRING,
+    type: Sequelize.STRING,
     allowNull: false
   },
   price: {
-    type: Sequilize.INTEGER,
+    type: Sequelize.INTEGER,
     allowNull: false
   },
   qty: {
-    type: Sequilize.INTEGER,
+    type: Sequelize.INTEGER,
     allowNull: true
   },
 });
 
 const Manufacturer = Connection.define('manufacturer', {
+  id: {
+    allowNull: false,
+    primaryKey: true,
+    type: Sequelize.UUID,
+    defaultValue: Sequelize.UUID4
+  },
   name: {
-    type: Sequilize.STRING,
+    type: Sequelize.STRING,
     allowNull: false
   },
   bio: {
-    type: Sequilize.STRING,
+    type: Sequelize.STRING,
     allowNull: false
   }
 });
 
 
 //================== Relations ========================//
+
+Users.hasMany(Comments);
+Comments.belongsTo(Users);
+Books.hasMany(Comments);
+Comments.belongsTo(Books);
+Books.belongsTo(Author);
+Author.hasMany(Books);
+Items.hasMany(Comments);
+Comments.belongTo(Items);
+Items.belongTo(Manufacturer);
+Manufacturer.hasMany(Items);
+
+
+//================== Data Injection ========================//
+
