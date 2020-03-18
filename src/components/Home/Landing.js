@@ -21,10 +21,7 @@ class Landing extends React.Component {
           <Col>
             <Row className="item-rows">
               {this.state.books.map((book) => (
-                <Link to={{
-                  pathname: "/store/book/"+book.sku,
-                  state: {sku: book.sku}
-                }}>
+                <Link to={`/store/books/${book.sku}`}>
                   <div className="item-card">
                     <Image className="display-grid-img" src={book.image} />
                     <p>{book.name}</p>
@@ -34,10 +31,7 @@ class Landing extends React.Component {
             </Row>
             <Row className="item-rows">
               {this.state.shirts.map((shirt) => (
-                <Link to={{
-                  pathname: "/store/shirts/"+shirt.sku,
-                  state: {sku: shirt.sku}
-                }}>
+                <Link to={`/store/shirts/${shirt.sku}`}>
                   <div className="item-card">
                     <Image className="display-grid-img" src={shirt.image} />
                     <p>{shirt.name}</p>

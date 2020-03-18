@@ -26,7 +26,8 @@
   },
   "scripts": {
     "client": "react-scripts start",
-    "start": "react-scripts start",
+    "dbserver": "./src/models/cloud_sql_proxy -instances=scalereacttrack:us-east1:scla-react-track-store-db=tcp:5432 -credential_file=./src/models/scalereacttrack-credentials.json",
+    "start": "npm run client && npm run dbserver",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

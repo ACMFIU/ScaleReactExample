@@ -31,3 +31,11 @@
   height: 250px;
   width: 215px;
 }
+
+.item-detail{
+  padding-top: 40px;
+}
+
+.item-detail .item-image {
+  height: 600px;
+}
