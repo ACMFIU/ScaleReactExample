@@ -1,55 +1,92 @@
 import React from 'react';
-import {Container, Row, Col, Image} from 'react-bootstrap';
-const data = require('../../models/fake-data');
-
+import {Container, Row, Col, Image, Button} from 'react-bootstrap';
+import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
+import ReactLoading from "react-loading";
 
 class ItemDetail extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      data: props.match.params
+      data: props.match.params,
+      query: gql`{books{title}}`,
     };
-    this.getDataFromDB = this.getDataFromDB.bind(this);
   }
 
-  getDataFromDB(){
+  componentDidMount(){
+    var item;
     if (this.state.data.hasOwnProperty('bookSKU')) {
-      var book;
-      for(book of data.books){
-        if(book.sku === this.state.data.bookSKU){
-          this.setState({data: book});
-          break;
+      console.log(this.state.data.bookSKU);
+      item = gql`
+        {
+          books(id: "${this.state.data.bookSKU}") {
+            title
+            sku
+            image
+            description
+            price
+            qty
+            pdf
+            authors {
+              fname
+              lname
+              bio
+            }
+          }
         }
-      }
-    } else if (this.state.data.hasOwnProperty('shirtSKU')) {
-      var shirt;
-      for(shirt of data.shirts){
-        if(shirt.sku === this.state.data.shirtSKU){
-          this.setState({data: shirt});
-          break;
-        }
-      }
+      `;
+      this.setState({query: item});
     }
   }
   render(){
-    this.getDataFromDB();
+    console.log(this.state.query);
     return(
       <Container>
         <Row className="item-detail">
           <Col xs={1}></Col>
-          <Col>
-            <Row>
-              <Col>
-                <Image className="item-image" src={this.state.data.image} />
-              </Col>
-              <Col>
-                <div>
-                  <h1>{this.state.data.name}</h1>
-                  <label>Price ${this.state.data.price}</label>
+          <Query query={this.state.query}>
+          {({loading, error, data}) => {
+            if(loading) return <ReactLoading className="loadingAnimation" type={"bars"} color={"black"} height={'30%'}  width={'30%'}/>;
+            if(error) return <p>Error!!</p>;
+
+            return data.books.map(({title, sku, image, description, price, qty, pdf, fname, lname, bio}) => (
+            <Col>
+              <Row>
+                <Col>
+                  <Image className="item-image" src={image} />
+                </Col>
+                <Col>
+                  <div>
+                    <h1>{title}</h1>
+                      <div>
+                        <h3>by {fname} {lname}</h3>
+                        <h5>ISBN: {sku} </h5>
+                      </div>
+                    <hr />
+                    <h3>Price ${price}</h3>
+                  </div>
+                  <Button varient="primary" type="button" href={pdf}> PURCHASE </Button>
+                  <Button variant="outline-dark">ADD TO WISHLIST</Button>
+                </Col>
+              </Row>
+              <Row>
+                <div class="item-description">
+                  <h3>Description</h3>
+                  <p>{description}</p>
                 </div>
-              </Col>
-            </Row>
-          </Col>
+              </Row>
+              <Row class="item-comments">
+                <h3>Comments</h3>
+                <p></p>
+              </Row>
+              <Row class="item-author-bio">
+                <h3>About the Author</h3>
+                <p>{bio}</p>
+              </Row>
+            </Col>
+            ));
+          }}
+          </Query>
           <Col xs={1}></Col>
         </Row>
       </Container>

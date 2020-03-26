@@ -1,6 +1,7 @@
 import React from 'react';
 import {Container, Col, Row, Nav, NavDropdown, Image} from 'react-bootstrap';
 import {Person, Search} from 'react-bootstrap-icons';
+import {Link} from 'react-router-dom';
 
 class Navigation extends React.Component {
   constructor(props){
@@ -14,11 +15,13 @@ class Navigation extends React.Component {
       <Container>
         <Row>
           <Col xs={2}>
-            <Image
-              src={require("../../assets/img/acm-logo.png")}
-              className="banner-logo"
-              alt="ACM logo"
-            />
+            <Link to="/">
+              <Image
+                src={require("../../assets/img/acm-logo.png")}
+                className="banner-logo"
+                alt="ACM logo"
+              />
+            </Link>
           </Col>
           <Col>
 

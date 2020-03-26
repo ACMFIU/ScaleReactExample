@@ -15,7 +15,7 @@ const getBooks = gql`
   }
 `;
 
-class Landing extends React.Component {
+class StoreBooks extends React.Component {
   constructor(props){
     super(props);
     this.state = {
@@ -60,4 +60,4 @@ class Landing extends React.Component {
   }
 }
 
-export default Landing;
+export default StoreBooks;

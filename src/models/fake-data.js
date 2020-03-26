@@ -9,7 +9,8 @@ Some books on algorithms are rigorous but incomplete; others cover masses of mat
 The first edition became a widely used text in universities worldwide as well as the standard reference for professionals. The second edition featured new chapters on the role of algorithms, probabilistic analysis and randomized algorithms, and linear programming. The third edition has been revised and updated throughout. It includes two completely new chapters, on van Emde Boas trees and multithreaded algorithms, substantial additions to the chapter on recurrence (now called “Divide-and-Conquer”), and an appendix on matrices. It features improved treatment of dynamic programming and greedy algorithms and a new notion of edge-based flow in the material on flow networks. Many exercises and problems have been added for this edition. The international paperback edition is no longer available; the hardcover is available worldwide.",
       price: 59.40,
       qty: 12,
-      pdf: "https://drive.google.com/file/d/1WxjkEu0jEPFhm1-D_yvzuW6D5uq0cyCz/view?usp=sharing"
+      pdf: "https://drive.google.com/file/d/1WxjkEu0jEPFhm1-D_yvzuW6D5uq0cyCz/view?usp=sharing",
+      author: 0
     },
     {
       name:"The C Programming Language 2nd Edition",
@@ -18,7 +19,8 @@ The first edition became a widely used text in universities worldwide as well as
       description:"The authors present the complete guide to ANSI standard C language programming. Written by the developers of C, this new version helps readers keep up with the finalized ANSI standard for C while showing how to take advantage of C's rich set of operators, economy of expression, improved control flow, and data structures. The 2/E has been completely rewritten with additional examples and problem sets to clarify the implementation of difficult language constructs. For years, C programmers have let K&R guide them to building well-structured and efficient programs. Now this same help is available to those working with ANSI compilers. Includes detailed coverage of the C language plus the official C language reference manual for at-a-glance help with syntax notation, declarations, ANSI changes, scope rules, and the list goes on and on.",
       price: 37.80,
       qty: 32,
-      pdf: "https://drive.google.com/file/d/1WuAki2ih6okfapDbyzl4cShvfMVCS69G/view?usp=sharing"
+      pdf: "https://drive.google.com/file/d/1WuAki2ih6okfapDbyzl4cShvfMVCS69G/view?usp=sharing",
+      author: 1
     },
     {
       name:"JavaScript & Jquery: Introduction front-end web development",
@@ -37,7 +39,8 @@ The first edition became a widely used text in universities worldwide as well as
       If you're looking to create more enriching web experiences, then this is the book for you.",
       price: 32.69,
       qty: 56,
-      pdf: "https://drive.google.com/file/d/1ia9Cke8F6b-GzOLt5EdgD88GtVzXljdz/view?usp=sharing"
+      pdf: "https://drive.google.com/file/d/1ia9Cke8F6b-GzOLt5EdgD88GtVzXljdz/view?usp=sharing",
+      author: 2
     },
   ],
   author:[
