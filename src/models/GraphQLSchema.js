@@ -51,7 +51,7 @@ const Users = new GraphQLObjectType({
 
 const Books = new GraphQLObjectType({
   name: "Books",
-  description: "This rprsents the books from the store",
+  description: "This represents the books from the store",
   fields: () => {
     return {
       id: {
@@ -151,6 +151,108 @@ const Authors = new GraphQLObjectType({
   }
 });
 
+const Items = new GraphQLObjectType({
+  name: "Items",
+  description: "This represents items from the store",
+  fields: () => {
+    return {
+      id: {
+        type: GraphQLID,
+        resolve(item) {
+          return item.id
+        }
+      },
+      name: {
+        type: GraphQLString,
+        resolve(item){
+          return item.name
+        }
+      },
+      type: {
+        type: GraphQLString,
+        resolve(item){
+          return item.type
+        }
+      },
+      sku: {
+        type: GraphQLString,
+        resolve(item){
+          return item.sku
+        }
+      },
+      image: {
+        type: GraphQLString,
+        resolve(item){
+          return item.image
+        }
+      },
+      description: {
+        type: GraphQLString,
+        resolve(item){
+          return item.description
+        }
+      },
+      price: {
+        type: GraphQLFloat,
+        resolve(item){
+          return item.price
+        }
+      },
+      size: {
+        type: GraphQLString,
+        resolve(item){
+          return item.size
+        }
+      },
+      qty: {
+        type: GraphQLInt,
+        resolve(item){
+          return item.qty
+        }
+      },
+      manufacturer: {
+        type: Manufacturers,
+        resolve(item){
+          return item.getManufacturer();
+        }
+      }
+    }
+  }
+});
+
+const Manufacturers = new GraphQLObjectType({
+  name: "Manufacturers",
+  description: "This represents the manufacturers for the items from the store",
+  fields: () => {
+    return {
+      id: {
+        type: GraphQLID,
+        resolve(manufacturer){
+          return manufacturer.id
+        }
+      },
+      name: {
+        type: GraphQLString,
+        resolve(manufacturer){
+          return manufacturer.name
+        }
+      },
+      bio: {
+        type: GraphQLString,
+        resolve(manufacturer){
+          return manufacturer.bio
+        }
+      },
+      items: {
+        type: new GraphQLList(Items),
+        resolve(manufacturer){
+          return manufacturer.getItems();
+        }
+      }
+    }
+  }
+});
+
 const RootQuery = new GraphQLObjectType({
   name: 'RootQuery',
   description: 'This is the root query',
@@ -160,6 +262,9 @@ const RootQuery = new GraphQLObjectType({
         args: {
           id: {
             type: GraphQLID
+          },
+          title: {
+            type: GraphQLString
           }
         },
         resolve(root, args){
@@ -175,6 +280,34 @@ const RootQuery = new GraphQLObjectType({
         },
         resolve(root, args){
           return SQLdb.models.authors.findAll({where: args});
+        }
+      },
+      items: {
+        type: new GraphQLList(Items),
+        args: {
+          id: {
+            type: GraphQLID
+          },
+          size: {
+            type: GraphQLString
+          },
+          name: {
+            type: GraphQLString
+          }
+        },
+        resolve(root, args){
+          return SQLdb.models.items.findAll({where: args});
+        }
+      },
+      manufacturers: {
+        type: new GraphQLList(Manufacturers),
+        args: {
+          id: {
+            type: GraphQLID
+          }
+        },
+        resolve(root, args){
+          return SQLdb.models.manufacturers.findAll({where: args});
         }
       }
     }

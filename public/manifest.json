@@ -4,18 +4,18 @@
   "icons": [
     {
       "src": "acm-logo16.png",
-      "sizes": "16x16",
+      "sizes": "16x10",
       "type": "image/png"
     },
     {
       "src": "acm-logo192.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "192x115"
     },
     {
       "src": "acm-logo512.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "512x306"
     }
   ],
   "start_url": ".",

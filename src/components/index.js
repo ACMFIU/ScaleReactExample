@@ -10,6 +10,7 @@ import StoreBooks from './Home/StoreBooks';
 import ItemDetail from './ItemDetails/ItemDetail';
 import Navigation from './Navigation/StoreNavBar';
 import AboutUs from './AboutUs/AboutUs';
+import SearchResults from './Home/SearchResults';
 import ApolloClient from 'apollo-boost';
 import {ApolloProvider} from 'react-apollo';
 
@@ -27,6 +28,7 @@ export default function Main() {
             <Route path="/blog" exact />
             <Route path="/contact-us" exact />
             <Route path='/shop/books' exact component={StoreBooks}/>
+            <Route path='/shop/search/:search'  component={SearchResults}/>
             <Route path='/shop/books/:bookSKU' component={ItemDetail} />
             <Route path='/shop/shirts/:shirtSKU' component={ItemDetail} />
           </Switch>

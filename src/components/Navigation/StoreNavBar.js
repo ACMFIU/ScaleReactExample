@@ -1,5 +1,5 @@
 import React from 'react';
-import {Container, Col, Row, Nav, NavDropdown, Image} from 'react-bootstrap';
+import {Container, Col, Row, Nav, NavDropdown, Image, InputGroup, Form, Button} from 'react-bootstrap';
 import {Person, Search} from 'react-bootstrap-icons';
 import {Link} from 'react-router-dom';
 
@@ -7,8 +7,20 @@ class Navigation extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      authenticated: false
+      authenticated: false,
+      submit:false,
+      data: {}
     };
+  }
+
+  searchChangeHandler(event){
+    this.setState({data: event});
+  }
+
+  searchSubmitHandler(event){
+    this.setState({submit: true});
+    this.setState({data: event});
+
   }
   render(){
     return(
@@ -24,10 +36,22 @@ class Navigation extends React.Component {
             </Link>
           </Col>
           <Col>
-
           </Col>
-          <Col xs={2}>
-            <Search />
+          <Col xs={4}>
+            <Form onSubmit={(e) => this.searchSubmitHandler(e.target.value)}>
+              <Form.Group>
+                <InputGroup>
+                  <Form.Control
+                    type="text"
+                    placeholder="Search By Name"
+                    onChange={(e) => this.searchChangeHandler(e.target.value)}
+                  />
+                  <InputGroup.Append>
+                    <Button variant="outline-secondary" type="submit" href={`/shop/search/${this.state.data}`} ><Search /></Button>
+                  </InputGroup.Append>
+                </InputGroup>
+              </Form.Group>
+            </Form>
             <Person />
           </Col>
         </Row>

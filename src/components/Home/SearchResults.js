@@ -5,28 +5,31 @@ import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import ReactLoading from "react-loading";
 
-const getData = gql`
-  {
-    books {
-      id
-      title
-      image
-    },
-    items(size: "S") {
-      id
-      name
-      image
-    }
-  }
-`;
-
-class Landing extends React.Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      books: this.props.data
+class SearchResults extends React.Component {
+constructor(props){
+  super(props);
+  console.log(props.match.params.search);
+  this.state = {
+    errorBook: false,
+    queryBook: gql`
+      {
+        books(title: "${props.match.params.search}") {
+          id
+          title
+          image
+        }
+      }
+      `,
+    queryItems: gql`
+      {
+        items(name: "${props.match.params.search}", size: "S") {
+          id
+          name
+          image
+        }
+      }
+      `,
     };
-
   }
 
   render(){
@@ -36,10 +39,10 @@ class Landing extends React.Component {
           <Col xs={2}></Col>
           <Col>
             <Row className="item-rows">
-              <Query query={getData}>
+              <Query query={this.state.queryBook}>
                 {({loading, error, data}) => {
                   if(loading) return <ReactLoading className="loadingAnimation" type={"bars"} color={"black"} height={'30%'}  width={'30%'}/>;
-                  if(error) return <p>Error!!</p>;
+                  if(error) {this.setState({errorBook: true})};
 
                   return data.books.map(({id, title, image,}) => (
                     <Link to={`/shop/books/${id}`}>
@@ -56,13 +59,14 @@ class Landing extends React.Component {
                   ));
                 }}
               </Query>
-              <Query query={getData}>
+
+              <Query query={this.state.queryItems}>
                 {({loading, error, data}) => {
                   if(loading) return <ReactLoading className="loadingAnimation" type={"bars"} color={"black"} height={'30%'}  width={'30%'}/>;
                   if(error) return <p>Error!!</p>;
 
-                  return data.items.map(({id, name, image,}) => (
-                    <Link to={`/shop/shirts/${id}`}>
+                  return data.items.map(({id, type, name, image,}) => (
+                    <Link to={`/shop/${type}/${id}`}>
                       <div className="item-card">
                         <div>
                           <Image className="display-grid-img" src={image} />
@@ -85,4 +89,4 @@ class Landing extends React.Component {
   }
 }
 
-export default Landing;
+export default SearchResults;
