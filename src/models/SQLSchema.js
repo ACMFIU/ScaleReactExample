@@ -1,5 +1,7 @@
-import Sequelize from 'sequielize';
-import _ from 'lodash';
+const Sequelize = require('sequelize');
+const _ = require('lodash');
+const data = require('./fake-data');
+const uuid = require('uuid/v4');
 
 const Connection = new Sequelize(
   'storeDB',
@@ -8,7 +10,6 @@ const Connection = new Sequelize(
   {
     dialect: 'postgres',
     host: 'localhost',
-
   }
 );
 
@@ -62,15 +63,15 @@ const Books = Connection.define('books', {
     allowNull: false
   },
   image: {
-    type: Sequelize.STRING,
+    type: Sequelize.STRING(5000),
     allowNull: false
   },
   description: {
-    type: Sequelize.STRING,
+    type: Sequelize.STRING(5000),
     allowNull: false
   },
   price: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.FLOAT,
     allowNull: false
   },
   qty: {
@@ -78,28 +79,28 @@ const Books = Connection.define('books', {
     allowNull: true
   },
   pdf: {
-    type: Sequelize.STRING,
+    type: Sequelize.STRING(5000),
     allowNull: true
   }
 });
 
-const Author = Connection.define('authors', {
+const Authors = Connection.define('authors', {
   id: {
     allowNull: false,
     primaryKey: true,
     type: Sequelize.UUID,
     defaultValue: Sequelize.UUID4
   },
-  firstName: {
+  fname: {
     type: Sequelize.STRING,
     allowNull: false
   },
-  lastName: {
+  lname: {
     type: Sequelize.STRING,
     allowNull: false
   },
   bio: {
-    type: Sequelize.STRING,
+    type: Sequelize.STRING(5000),
     allowNull: false
   },
 });
@@ -137,16 +138,20 @@ const Items = Connection.define('items', {
     allowNull: false
   },
   image: {
-    type: Sequelize.STRING,
+    type: Sequelize.STRING(5000),
     allowNull: false
   },
   description: {
-    type: Sequelize.STRING,
+    type: Sequelize.STRING(5000),
     allowNull: false
   },
   price: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.FLOAT,
     allowNull: false
+  },
+  size: {
+    type: Sequelize.STRING,
+    allowNull: true
   },
   qty: {
     type: Sequelize.INTEGER,
@@ -154,7 +159,7 @@ const Items = Connection.define('items', {
   },
 });
 
-const Manufacturer = Connection.define('manufacturer', {
+const Manufacturers = Connection.define('manufacturers', {
   id: {
     allowNull: false,
     primaryKey: true,
@@ -166,25 +171,83 @@ const Manufacturer = Connection.define('manufacturer', {
     allowNull: false
   },
   bio: {
-    type: Sequelize.STRING,
+    type: Sequelize.STRING(5000),
     allowNull: false
   }
 });
 
 
 //================== Relations ========================//
-
+// 1:1 - one to one
+// 1:N - one to many
+// N:M - many to many
 Users.hasMany(Comments);
 Comments.belongsTo(Users);
 Books.hasMany(Comments);
 Comments.belongsTo(Books);
-Books.belongsTo(Author);
-Author.hasMany(Books);
+Books.belongsTo(Authors);
+Authors.hasMany(Books);
 Items.hasMany(Comments);
-Comments.belongTo(Items);
-Items.belongTo(Manufacturer);
-Manufacturer.hasMany(Items);
+Comments.belongsTo(Items);
+Items.belongsTo(Manufacturers);
+Manufacturers.hasMany(Items);
 
 
 //================== Data Injection ========================//
+//Insert table_name (name, ssn, phonenumber..) Values('john smith',  44555555, '323232323');
+Connection.sync({force: true}).then(() => {
+  var n = -1;
+  var k = -1;
+  _.times(data.books.length, () => {
+    n++;
+    return Books.create({
+      id: uuid(),
+      title: data.books[n].name,
+      sku: data.books[n].sku,
+      image: data.books[n].image,
+      description: data.books[n].description,
+      price: data.books[n].price,
+      qty: data.books[n].qty,
+      pdf: data.books[n].pdf,
+    }).then(book => {
+      k++;
+      return book.createAuthor({
+        id: uuid(),
+        fname: data.author[data.books[k].author].firstName,
+        lname: data.author[data.books[k].author].lastName,
+        bio: data.author[data.books[k].author].bio
+      });
+    });
+  });
+  n = -1;
+  _.times(data.shirts.length, () => {
+    n++;
+    var p = -1;
+    var i = -1;
+    _.times(data.shirts[n].sizes.length, () => {
+      i++;
+      return Items.create({
+        id: uuid(),
+        name: data.shirts[n].name,
+        type: "shirts",
+        sku: data.shirts[n].sku,
+        image: data.shirts[n].image,
+        description: data.shirts[n].description,
+        price: data.shirts[n].price,
+        size: data.shirts[n].sizes[i],
+        qty: data.shirts[n].qty[i],
+      }).then(shirt => {
+        p++;
+        console.log(data.manufacturer[data.shirts[n].manufacturer].name);
+        return shirt.createManufacturer({
+          id: uuid(),
+          name: data.manufacturer[data.shirts[n].manufacturer].name,
+          bio: data.manufacturer[data.shirts[n].manufacturer].bio
+        });
+      });
+    });
+  });
+});
 
+
+module.exports = Connection;

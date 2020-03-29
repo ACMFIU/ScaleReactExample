@@ -11,6 +11,13 @@
   margin-right: auto;
 }
 
+
+.loadingAnimation{
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: auto;
+  padding-bottom: auto;
+}
 .item-rows{
   margin-top: 40px;
   margin-bottom: 25px;
@@ -26,6 +33,14 @@
 .item-card{
   margin-left: 15px;
   margin-right: 15px;
+  height: 250px;
+  width: 215px;
+  border-width: 25px;
+  border-color: black;
+}
+.item-card p {
+  float: left;
+  text-align: center;
 }
 .display-grid-img {
   height: 250px;
@@ -34,7 +49,43 @@
 .item-detail{
   padding-top: 40px;
 }
-
+.btn-items {
+  font-size: 18px;
+  padding-top: 20px;
+  width:100%;
+}
+.btn-items .btn-cart{
+  width: 45%;
+  float: left;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+.btn-items .btn-wish{
+  width: 45%;
+  float: right;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
 .item-detail .item-image {
-  height: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  height: 350px;
+}
+.item-detail .item-description {
+  background-color: #e5e5e5;
+  margin-top: 40px;
+  margin-bottom: 25px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  padding-left: 50px;
+  padding-right: 50px;
+}
+.item-detail .item-description h3 {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.item-comments-header h3{
+  text-align: center;
 }
