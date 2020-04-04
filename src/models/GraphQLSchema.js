@@ -9,6 +9,7 @@ const {
   GraphQLSchema
 } = graphql;
 const SQLdb = require('./SQLSchema');
+const uuid = require('uuid/v4');
 
 const Users = new GraphQLObjectType({
   name: "User",
@@ -310,6 +311,39 @@ const RootQuery = new GraphQLObjectType({
           return SQLdb.models.manufacturers.findAll({where: args});
         }
       }
+    }
+});
+const RootMutation = new GraphQLObjectType({
+  name: 'RootMutation',
+  description: 'This is the root mutation for post',
+  fields: {
+      addUser: {
+        type: Users,
+        args: {
+          firstName: {
+            type: GraphQLString
+          },
+          lastName: {
+            type: GraphQLString
+          },
+          email: {
+            type: GraphQLString
+          },
+          password: {
+            type: GraphQLString
+          }
+        },
+        resolve(root, args){
+          let user = new User({
+            id: uuid(),
+            firstName: args.firstName,
+            lastName: args.lastName,
+            email: args.email,
+            password: args.password
+          });
+          SQLdb.models.users.create(user);
+        }
+      },
     }
 });
 

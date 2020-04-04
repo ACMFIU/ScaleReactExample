@@ -3,6 +3,9 @@ import {Container, Row, Col, Image, Button} from 'react-bootstrap';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import ReactLoading from "react-loading";
+import Popup from 'reactjs-popup';
+import Comments from './Comments';
+import Recommendation from './Recommendation';
 
 class ItemDetail extends React.Component {
   constructor(props){
@@ -10,6 +13,7 @@ class ItemDetail extends React.Component {
     const data = props.match.params;
     var item;
     var type;
+    this.zoom = false;
     this.state = {
       data: props.match.params,
       query: gql`{books{title}}`,
@@ -27,6 +31,7 @@ class ItemDetail extends React.Component {
             qty
             pdf
             authors {
+              id
               fname
               lname
               bio
@@ -46,6 +51,7 @@ class ItemDetail extends React.Component {
             price
             qty
             manufacturer {
+              id
               name
               bio
             }
@@ -59,6 +65,12 @@ class ItemDetail extends React.Component {
       query: item,
       type: type
     };
+
+  }
+
+  toggleZoom(){
+    this.zoom = !this.zoom;
+    console.log(this.zoom)
   }
 
   render(){
@@ -71,12 +83,13 @@ class ItemDetail extends React.Component {
             if(loading) return <ReactLoading className="loadingAnimation" type={"bars"} color={"black"} height={'30%'}  width={'30%'}/>;
             if(error) return <p>Error!!</p>;
             if(this.state.type === "shirts"){
-              console.log(data);
               return data.items.map(({name, sku, image, description, price, qty, manufacturer,}) => (
               <Col>
                 <Row>
                   <Col>
-                    <Image className="item-image" src={image} />
+                    <Popup modal trigger={<Button variant="link"><Image className="item-image" src={image} /></Button>}>
+                      <Image className="item-image-zoom" src={image} />
+                    </Popup>
                   </Col>
                   <Col>
                     <div>
@@ -95,26 +108,20 @@ class ItemDetail extends React.Component {
                   </Col>
                 </Row>
                 <Row>
-                  <div class="item-description">
+                  <div className="item-description">
                     <h3>Description</h3>
                     <p>{description}</p>
                   </div>
                 </Row>
-                <Row class="item-comments-header">
-                  <Col><hr /></Col>
-                  <Col xs={2}>
-                    <h3>Comments</h3>
-                  </Col>
-                  <Col><hr /></Col>
+                <Comments />
+                <Row>
+                  <div className="item-author-bio">
+                    <h3>About the Manufacturer</h3>
+                    <p>{manufacturer.bio}</p>
+                  </div>
                 </Row>
-                <Row class="item-comments">
-                  <Col>
-                    <p>stuff</p>
-                  </Col>
-                </Row>
-                <Row class="item-author-bio">
-                  <h3>About the Manufacturer</h3>
-                  <p>{manufacturer.bio}</p>
+                <Row>
+                  <Recommendation maker={manufacturer.id} type={this.state.type}/>
                 </Row>
               </Col>
               ));
@@ -123,7 +130,9 @@ class ItemDetail extends React.Component {
               <Col>
                 <Row>
                   <Col>
-                    <Image className="item-image" src={image} />
+                  <Popup modal trigger={<Button variant="link"><Image className="item-image" src={image} /></Button>}>
+                    <Image className="item-image-zoom" src={image} />
+                  </Popup>
                   </Col>
                   <Col>
                     <div>
@@ -142,26 +151,20 @@ class ItemDetail extends React.Component {
                   </Col>
                 </Row>
                 <Row>
-                  <div class="item-description">
+                  <div className="item-description">
                     <h3>Description</h3>
                     <p>{description}</p>
                   </div>
                 </Row>
-                <Row class="item-comments-header">
-                  <Col><hr /></Col>
-                  <Col xs={2}>
-                    <h3>Comments </h3>
-                  </Col>
-                  <Col><hr /></Col>
+                <Comments />
+                <Row>
+                  <div className="item-author-bio">
+                    <h3>About the Author</h3>
+                    <p>{authors.bio}</p>
+                  </div>
                 </Row>
-                <Row class="item-comments">
-                  <Col>
-                    <p>stuff</p>
-                  </Col>
-                </Row>
-                <Row class="item-author-bio">
-                  <h3>About the Author</h3>
-                  <p>{authors.bio}</p>
+                <Row>
+                  <Recommendation maker={authors.id} type={this.state.type}/>
                 </Row>
               </Col>
               ));
