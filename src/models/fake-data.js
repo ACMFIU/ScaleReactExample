@@ -108,7 +108,7 @@ Coding problems are presented through a series of chapters on basic and advanced
       name:"Panda Print Tee",
       sku:"smtop03190624755",
       image: "https://img.ltwebstatic.com/images2_pi/2019/07/10/15627534164039428996_thumbnail_900x1199.webp",
-      manufacturer:1,
+      manufacturer: 1,
       description: " Style:	Preppy\
       Color:	Black \
       Pattern Type:	Animal \

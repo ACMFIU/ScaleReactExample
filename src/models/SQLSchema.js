@@ -197,7 +197,30 @@ Manufacturers.hasMany(Items);
 //Insert table_name (name, ssn, phonenumber..) Values('john smith',  44555555, '323232323');
 Connection.sync({force: true}).then(() => {
   var n = -1;
-  var k = -1;
+  var k;
+  var cache = {
+    booksAuthorID: [],
+    itemsManufacturerID: [],
+  }
+  for(k in data.author){
+    cache.booksAuthorID.push(uuid());
+  }
+  for(k in data.manufacturer){
+    cache.itemsManufacturerID.push(uuid());
+  }
+  _.times(data.author.length, () => {
+    n++;
+    return Authors.create({
+      id: cache.booksAuthorID[n],
+      fname: data.author[n].firstName,
+      lname: data.author[n].lastName,
+      bio: data.author[n].bio
+    }).then(author => {
+      console.log("created author");
+    });
+  });
+  n = -1;
+  k = -1;
   _.times(data.books.length, () => {
     n++;
     return Books.create({
@@ -211,19 +234,25 @@ Connection.sync({force: true}).then(() => {
       pdf: data.books[n].pdf,
     }).then(book => {
       k++;
-      return book.createAuthor({
-        id: uuid(),
-        fname: data.author[data.books[k].author].firstName,
-        lname: data.author[data.books[k].author].lastName,
-        bio: data.author[data.books[k].author].bio
-      });
+      return book.setAuthor(cache.booksAuthorID[data.books[k].author]);
+    });
+  });
+  n = -1;
+  _.times(data.manufacturer.length, () => {
+    n++;
+    return Manufacturers.create({
+      id: cache.itemsManufacturerID[n],
+      name: data.manufacturer[n].name,
+      bio: data.manufacturer[n].bio
+    }).then(manufacturer => {
+      console.log(manufacturer.id);
     });
   });
   n = -1;
   _.times(data.shirts.length, () => {
     n++;
-    var p = -1;
     var i = -1;
+    var k = n;
     _.times(data.shirts[n].sizes.length, () => {
       i++;
       return Items.create({
@@ -237,13 +266,9 @@ Connection.sync({force: true}).then(() => {
         size: data.shirts[n].sizes[i],
         qty: data.shirts[n].qty[i],
       }).then(shirt => {
-        p++;
-        console.log(data.manufacturer[data.shirts[n].manufacturer].name);
-        return shirt.createManufacturer({
-          id: uuid(),
-          name: data.manufacturer[data.shirts[n].manufacturer].name,
-          bio: data.manufacturer[data.shirts[n].manufacturer].bio
-        });
+        console.log(k);
+        console.log(data.shirts[k].manufacturer);
+        return shirt.setManufacturer(cache.itemsManufacturerID[data.shirts[k].manufacturer]);
       });
     });
   });
